@@ -1,0 +1,13 @@
+flask==3.0.3
+flask-sqlalchemy==3.1.1
+flask-login==0.6.3
+flask-mail==0.10.0
+flask-wtf==1.2.1
+flask-bcrypt==1.0.1
+crewai==0.80.0
+crewai-tools==0.17.0
+apscheduler==3.10.4
+python-dotenv==1.0.1
+email-validator==2.1.1
+itsdangerous==2.2.0
+requests==2.32.3
