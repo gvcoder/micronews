@@ -1,0 +1,60 @@
+{% extends 'user/base.html' %}
+{% block title %}Feed — Micro-News{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">My Feed</h2>
+  {% if unread_count > 0 %}
+    <span class="badge bg-primary fs-6">{{ unread_count }} unread</span>
+  {% endif %}
+</div>
+
+{% if not has_subscriptions %}
+  <div class="alert alert-info" role="alert">
+    You have no active subscriptions.
+    <a href="{{ url_for('user_app.subscriptions') }}" class="alert-link">Subscribe to categories</a>
+    to start receiving news.
+  </div>
+{% elif not feed_by_category %}
+  <p class="text-muted">No snippets delivered yet. Check back after your preferred delivery time.</p>
+{% else %}
+  {% for category_name, user_snippets in feed_by_category %}
+  <section class="mb-5">
+    <h4 class="border-bottom pb-2">{{ category_name }}</h4>
+    {% for us in user_snippets %}
+    <div class="card mb-3 {% if us.is_read %}border-secondary text-muted{% endif %}">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <h6 class="card-title mb-1">
+            {% if not us.is_read %}<span class="badge bg-primary me-1">New</span>{% endif %}
+            {{ us.snippet.headline }}
+          </h6>
+        </div>
+        <p class="card-text mt-2">{{ us.snippet.body }}</p>
+        {% if us.snippet.source_url %}
+          <a href="{{ us.snippet.source_url }}" target="_blank" rel="noopener noreferrer"
+             class="card-link small" style="min-height:44px;display:inline-flex;align-items:center;">
+            Read source ↗
+          </a>
+        {% endif %}
+        <div class="d-flex gap-2 mt-3">
+          {% if not us.is_read %}
+          <form method="POST" action="{{ url_for('user_app.mark_read', snippet_id=us.id) }}">
+            <button type="submit" class="btn btn-outline-success btn-sm" style="min-height:44px;min-width:44px;">
+              Mark Read
+            </button>
+          </form>
+          {% endif %}
+          <form method="POST" action="{{ url_for('user_app.delete_snippet', snippet_id=us.id) }}">
+            <button type="submit" class="btn btn-outline-danger btn-sm" style="min-height:44px;min-width:44px;">
+              Delete
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </section>
+  {% endfor %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'user/base.html' %}
+{% block title %}Register — Micro-News{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-12 col-sm-8 col-md-5">
+    <h2 class="mb-4">Create Account</h2>
+
+    <form method="POST" action="{{ url_for('user_app.register') }}">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="email" name="email"
+               autocomplete="email" required style="min-height:44px;">
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password"
+               autocomplete="new-password" required style="min-height:44px;">
+        <div class="form-text">Min 8 characters, at least one uppercase, one lowercase, one digit.</div>
+      </div>
+      <div class="mb-3">
+        <label for="confirm_password" class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
+               autocomplete="new-password" required style="min-height:44px;">
+      </div>
+      <button type="submit" class="btn btn-primary w-100" style="min-height:44px;">Register</button>
+    </form>
+
+    <p class="mt-3 text-center">
+      Already have an account?
+      <a href="{{ url_for('user_app.login') }}" style="min-height:44px;display:inline-flex;align-items:center;">Log in</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

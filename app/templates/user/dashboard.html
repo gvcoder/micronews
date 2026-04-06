@@ -1,0 +1,50 @@
+{% extends 'user/base.html' %}
+{% block title %}Dashboard — Micro-News{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Dashboard</h2>
+
+{% if not has_subscriptions %}
+  <div class="alert alert-info" role="alert">
+    You have no active subscriptions yet.
+    <a href="{{ url_for('user_app.subscriptions') }}" class="alert-link">Subscribe to categories</a>
+    to start receiving news.
+  </div>
+{% endif %}
+
+<div class="row g-3">
+  <div class="col-12 col-sm-6 col-md-4">
+    <div class="card text-bg-primary">
+      <div class="card-body">
+        <h5 class="card-title">Unread Snippets</h5>
+        <p class="card-text display-6">{{ unread_count }}</p>
+        <a href="{{ url_for('user_app.feed') }}" class="btn btn-light btn-sm" style="min-height:44px;min-width:44px;">
+          Go to Feed
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Delivered Today</h5>
+        <p class="card-text display-6">{{ today_delivered_count }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-md-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Quick Links</h5>
+        <div class="d-flex flex-column gap-2 mt-2">
+          <a href="{{ url_for('user_app.feed') }}" class="btn btn-outline-primary btn-sm" style="min-height:44px;">My Feed</a>
+          <a href="{{ url_for('user_app.subscriptions') }}" class="btn btn-outline-secondary btn-sm" style="min-height:44px;">Subscriptions</a>
+          <a href="{{ url_for('user_app.profile') }}" class="btn btn-outline-secondary btn-sm" style="min-height:44px;">Profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

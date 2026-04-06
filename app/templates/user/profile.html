@@ -1,0 +1,49 @@
+{% extends 'user/base.html' %}
+{% block title %}Profile — Micro-News{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12 col-md-7">
+    <h2 class="mb-4">Profile</h2>
+
+    <form method="POST" action="{{ url_for('user_app.profile') }}">
+      <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name"
+               value="{{ user.name or '' }}" autocomplete="name" style="min-height:44px;">
+      </div>
+      <div class="mb-3">
+        <label for="birthday" class="form-label">Birthday</label>
+        <input type="date" class="form-control" id="birthday" name="birthday"
+               value="{{ user.birthday.isoformat() if user.birthday else '' }}" style="min-height:44px;">
+      </div>
+      <div class="mb-3">
+        <label for="preferred_delivery_time" class="form-label">Preferred Delivery Time (IST)</label>
+        <input type="time" class="form-control" id="preferred_delivery_time" name="preferred_delivery_time"
+               value="{{ user.preferred_delivery_time.strftime('%H:%M') if user.preferred_delivery_time else '10:00' }}"
+               style="min-height:44px;">
+        <div class="form-text">Snippets will be delivered to your feed at this time each day.</div>
+      </div>
+      <button type="submit" class="btn btn-primary" style="min-height:44px;min-width:44px;">Save Changes</button>
+    </form>
+  </div>
+
+  <div class="col-12 col-md-4 offset-md-1 mt-4 mt-md-0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Account</h5>
+        <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
+        <p class="mb-3"><strong>Member since:</strong> {{ user.created_at.strftime('%Y-%m-%d') }}</p>
+        <hr>
+        <h6>Change Password</h6>
+        <p class="small text-muted">A password-reset link will be sent to your email address.</p>
+        <form method="POST" action="{{ url_for('user_app.change_password') }}">
+          <button type="submit" class="btn btn-outline-secondary btn-sm" style="min-height:44px;min-width:44px;">
+            Send Reset Link
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

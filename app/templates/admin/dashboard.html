@@ -1,0 +1,46 @@
+{% extends 'admin/base.html' %}
+{% block title %}Dashboard — Micro-News Admin{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row g-3 mb-4">
+  <div class="col-12 col-sm-6 col-md-4">
+    <div class="card text-bg-primary">
+      <div class="card-body">
+        <h5 class="card-title">Categories</h5>
+        <p class="card-text display-6">{{ category_count }}</p>
+        <a href="{{ url_for('admin_app.category_list') }}" class="btn btn-light btn-sm" style="min-height:44px;min-width:44px;">
+          Manage
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-sm-6 col-md-8">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Today's Collection</h5>
+        {% if today_log %}
+          <ul class="list-unstyled mb-2">
+            <li><strong>Run at:</strong> {{ today_log.run_at.strftime('%Y-%m-%d %H:%M UTC') }}</li>
+            <li><strong>Total snippets:</strong> {{ today_log.total_snippets }}</li>
+            <li><strong>Categories processed:</strong> {{ today_log.categories_processed }}</li>
+            <li><strong>Categories failed:</strong> {{ today_log.categories_failed }}</li>
+          </ul>
+          {% if today_log.categories_failed > 0 %}
+            <span class="badge bg-warning text-dark">{{ today_log.categories_failed }} failure(s)</span>
+          {% else %}
+            <span class="badge bg-success">All categories OK</span>
+          {% endif %}
+        {% else %}
+          <p class="text-muted mb-0">No collection run recorded for today.</p>
+        {% endif %}
+        <a href="{{ url_for('admin_app.collection_log') }}" class="btn btn-outline-secondary btn-sm mt-2" style="min-height:44px;min-width:44px;">
+          View Full Log
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

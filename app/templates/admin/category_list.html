@@ -1,0 +1,72 @@
+{% extends 'admin/base.html' %}
+{% block title %}Categories — Micro-News Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Categories</h2>
+</div>
+
+<!-- Create category form -->
+<form method="POST" action="{{ url_for('admin_app.category_create') }}" class="row g-2 mb-4">
+  <div class="col-12 col-sm-8 col-md-6">
+    <input type="text" class="form-control" name="name" placeholder="New category name"
+           required style="min-height:44px;">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-success" style="min-height:44px;min-width:44px;">Add Category</button>
+  </div>
+</form>
+
+{% if categories %}
+  <table class="table table-striped table-hover align-middle">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Created</th>
+        <th class="text-end">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for category in categories %}
+      <tr>
+        <td>{{ category.name }}</td>
+        <td>{{ category.created_at.strftime('%Y-%m-%d') }}</td>
+        <td class="text-end">
+          <a href="{{ url_for('admin_app.category_delete_confirm', category_id=category.id) }}"
+             class="btn btn-danger btn-sm" style="min-height:44px;min-width:44px;">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  {% if pagination.pages > 1 %}
+  <nav aria-label="Category pagination">
+    <ul class="pagination justify-content-center">
+      <li class="page-item {% if not pagination.has_prev %}disabled{% endif %}">
+        <a class="page-link" href="{{ url_for('admin_app.category_list', page=pagination.prev_num) }}"
+           style="min-height:44px;min-width:44px;display:flex;align-items:center;">Previous</a>
+      </li>
+      {% for p in pagination.iter_pages() %}
+        {% if p %}
+          <li class="page-item {% if p == pagination.page %}active{% endif %}">
+            <a class="page-link" href="{{ url_for('admin_app.category_list', page=p) }}"
+               style="min-height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;">{{ p }}</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">…</span></li>
+        {% endif %}
+      {% endfor %}
+      <li class="page-item {% if not pagination.has_next %}disabled{% endif %}">
+        <a class="page-link" href="{{ url_for('admin_app.category_list', page=pagination.next_num) }}"
+           style="min-height:44px;min-width:44px;display:flex;align-items:center;">Next</a>
+      </li>
+    </ul>
+  </nav>
+  {% endif %}
+
+{% else %}
+  <p class="text-muted">No categories yet. Add one above.</p>
+{% endif %}
+{% endblock %}
